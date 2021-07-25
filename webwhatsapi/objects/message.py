@@ -25,7 +25,7 @@ def factory_message(js_obj, driver):
     if "lat" in js_obj and "lng" in js_obj and js_obj["lat"] and js_obj["lng"]:
         return GeoMessage(js_obj, driver)
 
-    if js_obj["isMedia"]:
+    if js_obj["mediaKey"]:  #   instead of isMedia  FIX DOWNLOAD DOCUMENTS AND PTT
         return MediaMessage(js_obj, driver)
 
     if js_obj["isNotification"]:
@@ -92,7 +92,7 @@ class MediaMessage(Message):
             self.caption = self._js_obj["caption"] or ""
 
         self.media_key = self._js_obj.get("mediaKey")
-        self.client_url = self._js_obj.get("clientUrl")
+        self.client_url = self._js_obj.get("deprecatedMms3Url") #  instead of  clientUrl Fix media download issue
 
         extension = mimetypes.guess_extension(self.mime)
         self.filename = "".join([str(id(self)), extension or ""])
